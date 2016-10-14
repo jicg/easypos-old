@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>登录</title>
+	<link href="/public/css/normalize.css" rel="stylesheet" type="text/css">
+	<style type="text/css">
+		body{
+			background-image: url(/public/img/login_bg.png);
+			background-size:cover;
+		}
+		.login{
+			margin: 160px auto;
+			width: 382px;
+			height: 293px;
+			background-image: url(/public/img/login_block_bg.png);
+		}
+		.login-top{
+			width: 382px;
+			height: 170px;
+			padding-top: 30px;
+			background-image: url(/public/img/login_block_top_bg.png);
+		}
+		.login-title{
+			height: 20px;
+			font-size: 16px;
+			font-weight: bold;
+			padding-left: 40px;
+			line-height: 20px;
+		}
+		.login-top input{
+			width: 290px;
+			background: #ede9e2;
+			border-radius: 5px;
+			padding-left: 20px;
+			border: 1px solid #8f785b;
+			box-shadow: inset 0px 1px 0px #b6ac9e;
+			margin-left: 36px;
+			margin-top: 10px;
+			height: 40px;
+			line-height: 40px;
+		}
+		.login-buttom{
+			margin-top: 10px;
+			margin-left: 40px;
+		}
+		.login-btn{
+			display: block;
+			float: right;
+			margin-right: 40px;
+			width: 110px;
+			height: 46px;
+			border:none;
+			background-color: transparent;
+			background-image: url(/public/img/login_btn.png);
+			cursor: pointer;
+		}
+		.login-btn span{display:block;margin-left: -10px;}
+		.spinner{cursor: pointer;}
+		.spinner span{
+			height: 46px;
+			line-height: 46px;
+			color: #efdcc1;
+			display: block;
+			float: left;
+			margin-left: 5px;
+			font-size: 14px;
+		}
+		.spinner i{
+			background-image: url(/public/img/spinner_no.png);
+			width: 46px;
+			height: 46px;
+			display: block;
+			float: left;
+		}
+		.spinner.ok i{
+			background-image: url(/public/img/spinner_ok.png);
+		}
+	</style>
+</head>
+<body>
+	<div class="wap">
+		<div class="login">
+			<form method="post" action="/login">
+				<input type="hidden" id="isautologin" name="isautologin" value="0">
+				<div class="login-top">
+					<div class="login-title">
+						<span>登录授权</span>
+					</div>
+					<div>
+						<input type="text" name="username" placeholder="用户">
+					</div>
+					<div>
+						<input type="password" name="password" placeholder="密码">
+					</div>
+				</div>
+				<div class="login-buttom">
+					<!-- <span class="spinner">
+						<i></i>
+						<span>自动登录</span>
+					</span> -->
+					<button class="login-btn"><span>登录</span></button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<!-- <script type="text/javascript" src="/public/js/jquery-3.1.1.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var isauto = false;
+			$(".spinner").click(function(e){
+				if(!isauto){
+					$("#isautologin").val("1");
+					$(".spinner").addClass("ok");
+					isauto=true;
+				}else{
+					$(".spinner").removeClass("ok");
+					$("#isautologin").val("0");
+					isauto=false;
+				}
+			});
+		});
+	</script> -->
+</body>
+</html>

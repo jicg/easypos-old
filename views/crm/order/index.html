@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>订单查看</title>
+	<link href="/public/css/normalize.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/public/plugins/font-awesome-4.6.3/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/public/plugins/bootstrap-3.3.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/public/plugins/toastr/toastr.min.css"></link>
+	<link  rel="stylesheet" type="text/css" href="/public/plugins/jquery.bootgrid-1.3.1/jquery.bootgrid.min.css"></link>
+	{{ Safe `<!--[if lt IE 9]>
+	<script src="/public/js/respond.min.js"></script>
+	<script src="/public/js/html5.js"></script>
+    <![endif]-->`}}
+	<style type="text/css">
+		.body{margin-top: 30px;}
+		@-moz-document url-prefix() {
+		  fieldset { display: table-cell; }
+		}
+		#item-fieldset .panel{margin-bottom: 5px;}
+		#item-fieldset{min-height: 460px;}
+		#item-fieldset .item-title{padding: 3px 5px 3px 15px;}
+		#item-fieldset .item-content{padding: 3px 15px;}
+		#item-fieldset .item-desc{text-overflow:ellipsis; white-space:nowrap;height=24px;line-height:24px; overflow:hidden;font-weight: normal;}
+		#item-fieldset dl{margin-bottom: 0px;}
+	</style>
+</head>
+
+<body>
+	<div id="item-body-template" style="display: none;">
+		<div class="col-md-12">
+			<div class="panel panel-default">
+			  <div class="panel-heading item-title">
+			  	<span>{product_no}</span>
+			  </div>
+			  <div class="panel-body item-content">
+			    <dl>
+				  <dt class="item-desc">
+				  	{product_desc}&nbsp
+				  </dt>
+				  <dt style="font-weight: normal;">
+				  	<span class="col-md-12">
+				  		<span>数量:</span>
+				  		<span class="full-right"></strong>{qty}</span></span>
+				  	</span>
+				  	<span class="col-md-12">
+				  		<apan>售价:</apan>
+				  		<span class="full-right"><strong>{trueprice}</strong></span>
+				  	</span>
+				  </dt>
+				</dl>
+			  </div>
+			</div>
+		</div>
+	</div>
+	<div class="wap">
+		<div class="header">
+			<nav class="navbar navbar-default" role="navigation">
+			  <div class="container">
+			    <!-- Brand and toggle get grouped for better mobile display -->
+			    <div class="navbar-header">
+			      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+			        <span class="sr-only">Toggle navigation</span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			      </button>
+			      <a class="navbar-brand" href="#">订单查看</a>
+			    </div>
+
+			    <!-- Collect the nav links, forms, and other content for toggling -->
+			    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			      <ul class="nav navbar-nav navbar-right">
+			        <li><a href="/view/pos"><i class="fa fa-tachometer" aria-hidden="true"></i> 收银台</a></li>
+			        <li class="dropdown">
+			          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+			          	<i class="fa fa-user" aria-hidden="true"></i> 个人中心<span class="caret"></span>
+			          </a>
+			          <ul class="dropdown-menu" role="menu">
+			            <li><a href="/view/changepwd"><i class="fa fa-lock" aria-hidden="true"></i> 修改密码</a></li>
+			            <li><a href="/view/logout"><i class="fa fa-power-off" aria-hidden="true"></i>  退出登录</a></li>
+			            <!-- <li class="divider"></li> -->
+			          </ul>
+			        </li>
+			      </ul>
+			    </div><!-- /.navbar-collapse -->
+			  </div><!-- /.container-fluid -->
+			</nav>
+		</div>
+
+		<div class="container body">
+			<div class="col-md-8">
+				<table id="grid-data" class="table table-condensed table-hover table-striped">
+					<colgroup>
+						<col width="40px;"></col>
+						<col width="160px;"></col>
+						<col width="20%"></col>
+						<col width="20%"></col>
+						<col width="85px;"></col>
+						<col width="140px;"></col>
+						<col width="70px;"></col>
+					</colgroup>
+				    <thead>
+				        <tr>
+				            <th data-column-id="id" data-type="numeric">ID</th>
+				            <th data-column-id="orderno">编号</th>
+				            <th data-column-id="customno">手工单号</th>
+				            <th data-column-id="remark">描述</th>
+				            <th data-column-id="trueamt" data-type="numeric">实际金额</th>
+				            <th data-column-id="udate" data-style="width:120px;">修改时间</th>
+				            <th data-column-id="commands" data-formatter="commands" data-sortable="false">操作</th>
+				        </tr>
+				    </thead>
+				</table>
+			</div>
+			
+			<div class="col-md-4">
+				<fieldset id="report-fieldset">
+    				<legend><i class="fa fa-bar-chart"></i> 销售情况 </legend>
+					<iframe class="col-md-12" style="border: 0px;min-height:420px;overflow:hidden;" src="/view/report/pos"></iframe>
+		    	</fieldset>
+				<fieldset id="order-fieldset" style="display: none;">
+				<!-- class="fa fa-pencil-square-o" -->
+    				<legend><i class="fa fa-map-signs"></i> 订单信息 <i class="fieldset-back pull-right fa fa-forward"></i></legend>
+
+					<div class="form-group">
+					    <label for="orderno">系统单号</label>
+						<input type="text" disabled="" class="form-control" id="orderno" >
+					</div>
+
+					<div class="form-group">
+					    <label for="customno">手工单号</label>
+						<input type="text"  disabled="" class="form-control" id="customno" >
+					</div>
+
+					<div class="form-group">
+						<div class="input-group">
+					    	<div class="input-group-addon">总金额</div>
+					    	<input  disabled="" class="form-control" type="number" id="totamt" value="0">
+					    </div>
+					</div>
+
+					<div class="form-group">
+						<div class="input-group">
+					    	<div class="input-group-addon">实际金额</div>
+					    	<input class="form-control" disabled="" type="number" id="trueamt" value="0">
+					    </div>
+					</div>
+
+					<div class="form-group">
+						<div class="input-group">
+					    	<div class="input-group-addon">付款金额</div>
+					    	<input class="form-control" disabled="" type="number" id="payamt" value="0">
+					    </div>
+					</div>
+
+					<div class="form-group">
+					    <label for="desc">备注</label>
+					    <textarea class="form-control" disabled="" id="desc" rows="3"></textarea>
+					</div>
+		    	</fieldset>
+		    	<fieldset id="item-fieldset" style="display: none;">
+    				<legend><i class="fa fa-credit-card"></i> 明细列表<i class="fieldset-back pull-right fa fa-forward"></i></legend> 
+    				<div>
+    				</div>
+		    	</fieldset>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="/public/js/jquery.min.js"></script>
+	<script type="text/javascript" src="/public/js/nano.js"></script>
+	<script type="text/javascript" src="/public/plugins/toastr/toastr.min.js"></script>
+	<script type="text/javascript" src="/public/plugins/bootstrap-3.3.0/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/public/plugins/jquery.bootgrid-1.3.1/jquery.bootgrid.min.js"></script>
+	<script type="text/javascript">
+		var templatehtml =  $("#item-body-template").html();
+		var grid = $("#grid-data").bootgrid({
+		    ajax: true,
+		    post: function (){
+		        return {
+		            // id: "b0df282a-0d67-40e5-8558-c9e93b7befed",
+		            // name:"fasd"
+		        };
+		    },
+		    url: "/crm/order/query",
+		    labels: {
+	            all: "全部",
+	            infos: "{{"{{ctx.start}}"}}-{{"{{ctx.end}}"}}/{{"{{ctx.total}}"}}",
+	            loading: "加载...",
+	            noResults: "没有数据!",
+	            refresh: "刷新",
+	            search: "查询"
+        	},
+		    formatters: {
+		        "commands": function(column, row)
+		        {
+		            return "<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.id + "\"><i class=\"fa fa-map-signs\"></i></button> " + 
+		                "<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.id + "\"><i class=\"fa fa-credit-card\"></i></button>";
+		        }
+		    }
+		}).on("loaded.rs.jquery.bootgrid", function(){
+		    grid.find(".command-edit").on("click", function(e){
+		       showOrderView($(this).data("row-id"))
+		    }).end().find(".command-delete").on("click", function(e){
+		       showItemView($(this).data("row-id"))
+		    });
+		});
+
+		function showOrderView(id){
+			$.get("/crm/order/get/"+id,function(data){
+				$("#orderno").val(data.orderno);
+				$("#customno").val(data.customno);
+				$("#desc").val(data.desc);
+				$("#totamt").val(data.totamt);
+				$("#trueamt").val(data.trueamt);
+				$("#payamt").val(data.payamt);
+				$("#retamt").val(data.retamt);
+				$("#item-fieldset").hide();
+				$("#order-fieldset").show();
+				$("#report-fieldset").hide();
+			},"json");
+		}
+
+		function showItemView(id){
+			$.get("/crm/order/getitems/"+id,function(data){
+				var html = ""
+				for(var i =0;i<data.length;i++){
+					html=html+nano(templatehtml,data[i])
+				}
+				$("#item-fieldset>div").html(html);
+				$("#order-fieldset").hide();
+				$("#report-fieldset").hide();
+				$("#item-fieldset").show();
+			},"json");
+		}
+		$(document).ready(function(){
+			$(".fieldset-back").click(function(){
+				$("#order-fieldset").hide();
+				$("#report-fieldset").show();
+				$("#item-fieldset").hide();
+			});
+		});
+	</script>
+</body>
+</html>

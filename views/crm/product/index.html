@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>商品维护</title>
+	<link href="/public/css/normalize.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/public/plugins/font-awesome-4.6.3/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/public/plugins/bootstrap-3.3.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/public/plugins/toastr/toastr.min.css"></link>
+	<link  rel="stylesheet" type="text/css" href="/public/plugins/jquery.bootgrid-1.3.1/jquery.bootgrid.min.css"></link>
+	{{ Safe `<!--[if lt IE 9]>
+	<script src="/public/js/respond.min.js"></script>
+	<script src="/public/js/html5.js"></script>
+    <![endif]-->`}}
+	<style type="text/css">
+		.body{margin-top: 30px;}
+		@-moz-document url-prefix() {
+		  fieldset { display: table-cell; }
+		}
+	</style>
+</head>
+
+<body>
+	<div class="wap">
+		<div class="header">
+			<nav class="navbar navbar-default" role="navigation">
+			  <div class="container">
+			    <!-- Brand and toggle get grouped for better mobile display -->
+			    <div class="navbar-header">
+			      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+			        <span class="sr-only">Toggle navigation</span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			      </button>
+			      <a class="navbar-brand" href="#">商品录入</a>
+			    </div>
+
+			    <!-- Collect the nav links, forms, and other content for toggling -->
+			    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			      <ul class="nav navbar-nav navbar-right">
+			        <li><a href="/view/pos"><i class="fa fa-tachometer" aria-hidden="true"></i> 收银台</a></li>
+			        <li class="dropdown">
+			          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+			          	<i class="fa fa-user" aria-hidden="true"></i> 个人中心<span class="caret"></span>
+			          </a>
+			          <ul class="dropdown-menu" role="menu">
+			            <li><a href="/view/changepwd"><i class="fa fa-lock" aria-hidden="true"></i> 修改密码</a></li>
+			            <li><a href="/view/logout"><i class="fa fa-power-off" aria-hidden="true"></i>  退出登录</a></li>
+			            <!-- <li class="divider"></li> -->
+			          </ul>
+			        </li>
+			      </ul>
+			    </div><!-- /.navbar-collapse -->
+			  </div><!-- /.container-fluid -->
+			</nav>
+		</div>
+
+		<div class="container body">
+			<div class="col-md-8">
+				<table id="grid-data" class="table table-condensed table-hover table-striped">
+					<colgroup>
+						<col width="50px;"></col>
+						<col width="15%"></col>
+						<col width="20%"></col>
+						<col width="80px;"></col>
+						<col width="120px;"></col>
+						<col width="60px;"></col>
+					</colgroup>
+				    <thead>
+				        <tr>
+				            <th data-column-id="id" data-type="numeric">ID</th>
+				            <th data-column-id="no">编号</th>
+				            <th data-column-id="remark">描述</th>
+				            <th data-column-id="saleprice" data-type="numeric">售价</th>
+				            <th data-column-id="udate" data-style="width:120px;">修改时间</th>
+				            <th data-column-id="commands" data-formatter="commands" data-sortable="false">操作</th>
+				        </tr>
+				    </thead>
+				</table>
+			</div>
+			
+			<div class="col-md-4">
+				<fieldset id="edit-fieldset" style="display: none;">
+					<!-- class="" -->
+	    			<legend><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 商品编辑</legend>
+	    			<input type="hidden"  id="edit-id">
+					<div class="form-group">
+					    <label for="edit-no">商品编号</label>
+						<input type="text" disabled="" class="form-control" id="edit-no" placeholder="商品编号">
+					</div>
+					<div class="form-group">
+					    <label for="edit-desc">商品描述</label>
+					    <textarea class="form-control" id="edit-desc" rows="3"></textarea>
+					</div>
+					
+					<div class="form-group">
+						<div class="input-group">
+					    	<div class="input-group-addon">进价</div>
+					    	<input class="form-control" type="number" id="edit-price" placeholder="进价">
+					    </div>
+					</div>
+
+					<div class="form-group">
+						<div class="input-group">
+					    	<div class="input-group-addon">售价</div>
+					    	<input class="form-control" type="number" id="edit-saleprice" placeholder="售价">
+					    </div>
+					</div>
+
+					<div class="form-group">
+						<div class="input-group">
+					    	<div class="input-group-addon">库存</div>
+					    	<input class="form-control" type="number" id="edit-qtycan" placeholder="库存">
+					    </div>
+					</div>
+					<button id="edit-submit" type="submit" class="btn btn-default">提交</button>
+					<button id="edit-back" type="submit" class="btn btn-default pull-right">返回</button>
+				 </fieldset>
+				<fieldset id="add-fieldset">
+					<!-- class="fa fa-pencil-square-o" -->
+	    			<legend><i class="fa fa-file-o" aria-hidden="true"></i> 商品新增</legend>
+					<div class="form-group">
+					    <label for="form-no">商品编号</label>
+						<input type="text" class="form-control" id="form-no" placeholder="商品编号">
+					</div>
+					<div class="form-group">
+					    <label for="form-desc">商品描述</label>
+					    <textarea class="form-control" id="form-desc" rows="3"></textarea>
+					</div>
+					
+					<div class="form-group">
+						<div class="input-group">
+					    	<div class="input-group-addon">进价</div>
+					    	<input class="form-control" type="number" id="form-price" placeholder="进价">
+					    </div>
+					</div>
+
+					<div class="form-group">
+						<div class="input-group">
+					    	<div class="input-group-addon">售价</div>
+					    	<input class="form-control" type="number" id="form-saleprice" placeholder="售价">
+					    </div>
+					</div>
+
+					<div class="form-group">
+						<div class="input-group">
+					    	<div class="input-group-addon">库存</div>
+					    	<input class="form-control" type="number" id="form-qtycan" placeholder="库存">
+					    </div>
+					</div>
+					<button id="form-submit" type="submit" class="btn btn-default">提交</button>
+				 </fieldset>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="/public/js/jquery.min.js"></script>
+	<script type="text/javascript" src="/public/plugins/toastr/toastr.min.js"></script>
+	<script type="text/javascript" src="/public/plugins/bootstrap-3.3.0/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/public/plugins/jquery.bootgrid-1.3.1/jquery.bootgrid.min.js"></script>
+	<script type="text/javascript">
+		var grid = $("#grid-data").bootgrid({
+		    ajax: true,
+		    post: function (){
+		        return {
+		            // id: "b0df282a-0d67-40e5-8558-c9e93b7befed",
+		            // name:"fasd"
+		        };
+		    },
+		    url: "/crm/product/query",
+		    labels: {
+	            all: "全部",
+	            infos: "{{"{{ctx.start}}"}}-{{"{{ctx.end}}"}}/{{"{{ctx.total}}"}}",
+	            loading: "加载...",
+	            noResults: "没有数据!",
+	            refresh: "刷新",
+	            search: "查询"
+        	},
+		    formatters: {
+		        "commands": function(column, row)
+		        {
+		            return "<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.id + "\"><i class=\"fa fa-pencil\" aria-hidden=\"true\"></i></button> " + 
+		                "<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.id + "\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></button>";
+		        }
+		    }
+		}).on("loaded.rs.jquery.bootgrid", function(){
+		    grid.find(".command-edit").on("click", function(e){
+		       showEditView($(this).data("row-id"))
+		    }).end().find(".command-delete").on("click", function(e){
+		       del($(this).data("row-id"));
+		    });
+		});
+
+		function del(id){
+			$.post("/crm/product/del/"+id,{},function(data){
+				if(data.code==0){
+					toastr.success('商品删除成功', data.msg);
+					grid.bootgrid("reload");
+				}else{
+					toastr.error('商品删除失败', data.msg);
+				}
+			},"json");
+		}
+
+		function showEditView(id){
+			$.get("/crm/product/get/"+id,function(data){
+				var div=$("#add-fieldset");
+				var div2=$("#edit-fieldset");
+				div.hide();
+				div2.show();
+				$("#edit-id").val(data.id);
+				$("#edit-no").val(data.no);
+				$("#edit-desc").val(data.desc);
+				$("#edit-price").val(data.price);
+				$("#edit-saleprice").val(data.saleprice);
+				$("#edit-qtycan").val(data.qtycan);
+			},"json");
+		}
+		$(document).ready(function(e){
+			$("#form-submit").click(function(e){
+				var no = $("#form-no").val();
+				if(!no){
+					toastr.error('商品编号不能为空', '请输入商品编号！');
+					return ;
+				}
+				var desc = $("#form-desc").val();
+				var price = $("#form-price").val();
+				var saleprice = $("#form-saleprice").val();
+				var qtycan = $("#form-qtycan").val();
+				var param = {
+					no:no,
+					desc:desc,
+					price:price,
+					saleprice:saleprice,
+					qtycan:qtycan
+				};
+				$.post("/crm/product/add",param,function(data){
+					if(data.code==0){
+						toastr.success('商品添加成功', data.msg);
+						grid.bootgrid("reload");
+					}else{
+						if(data.msg=="UNIQUE constraint failed: product.no"){
+							data.msg="商品编号已存在";
+						}
+						toastr.error('商品添加失败', data.msg);
+					}
+				},"json");
+			});
+			$("#edit-back").click(function(e){
+				$("#add-fieldset").show();
+				$("#edit-fieldset").hide();
+			});
+			$("#edit-submit").click(function(e){
+				var id = $("#edit-id").val()
+				//var no = $("#edit-no").val();
+				var desc = $("#edit-desc").val();
+				var price = $("#edit-price").val();
+				var saleprice = $("#edit-saleprice").val();
+				var qtycan = $("#edit-qtycan").val();
+				var param = {
+					desc:desc,
+					price:price,
+					saleprice:saleprice,
+					qtycan:qtycan
+				};
+				$.post("/crm/product/edit/"+id,param,function(data){
+					if(data.code==0){
+						toastr.success('商品修改成功', data.msg);
+						grid.bootgrid("reload");
+					}else{
+						toastr.error('商品添加失败', data.msg);
+					}
+					$("#add-fieldset").show();
+					$("#edit-fieldset").hide();
+				},"json");
+			});
+		});
+	</script>
+</body>
+</html>

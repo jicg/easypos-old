@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>修改密码</title>
+	<link href="/public/css/normalize.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/public/plugins/font-awesome-4.6.3/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/public/plugins/bootstrap-3.3.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/public/plugins/toastr/toastr.min.css"></link>
+	{{ Safe `<!--[if lt IE 9]>
+	<script src="/public/js/respond.min.js"></script>
+	<script src="/public/js/html5.js"></script>
+    <![endif]-->`}}
+</head>
+
+<body>
+	<div class="wap">
+		<div class="header">
+			<nav class="navbar navbar-default" role="navigation">
+			  <div class="container">
+			    <!-- Brand and toggle get grouped for better mobile display -->
+			    <div class="navbar-header">
+			      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+			        <span class="sr-only">Toggle navigation</span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			      </button>
+			      <a class="navbar-brand" href="#">修改密码</a>
+			    </div>
+
+			    <!-- Collect the nav links, forms, and other content for toggling -->
+			    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			      <ul class="nav navbar-nav navbar-right">
+			        <li><a href="/view/pos"><i class="fa fa-tachometer" aria-hidden="true"></i> 收银台</a></li>
+			        <li class="dropdown">
+			          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+			          	<i class="fa fa-user" aria-hidden="true"></i> 个人中心<span class="caret"></span>
+			          </a>
+			          <ul class="dropdown-menu" role="menu">
+			            <li><a href="/view/logout"><i class="fa fa-power-off" aria-hidden="true"></i>  退出登录</a></li>
+			          </ul>
+			        </li>
+			      </ul>
+			    </div><!-- /.navbar-collapse -->
+			  </div><!-- /.container-fluid -->
+			</nav>
+		</div>
+
+		<div class="container body" style="margin-top:100px;width:250%;">
+			<form class="form-horizontal" role="form">
+			  <div class="form-group">
+			    <label for="username" class="col-sm-2 control-label">账户</label>
+			    <div class="col-sm-10">
+			      <input type="text" disabled="" class="form-control" style="width:250px;" id="username" placeholder="用户名" value="{{ .user.Name }}">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="oldpass" class="col-sm-2 control-label">旧密码</label>
+			    <div class="col-sm-10">
+			      <input type="password" class="form-control" style="width:250px;" id="oldpass" placeholder="旧密码">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="newpass" class="col-sm-2 control-label">新密码</label>
+			    <div class="col-sm-10">
+			      <input type="password" class="form-control" style="width:250px;" id="newpass" placeholder="新密码">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="newpassAgain" class="col-sm-2 control-label">再次确认新密码</label>
+			    <div class="col-sm-10">
+			      <input type="password" class="form-control" style="width:250px;" id="newpassAgain" placeholder="再次确认新密码">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label class="col-sm-2 control-label">  </label>
+			 	 <button type="button" class="btn btn-primary" id="submit" style="text-align:center;">确认修改</button>
+			  </div>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript" src="/public/js/jquery.min.js"></script>
+	<script type="text/javascript" src="/public/plugins/toastr/toastr.min.js"></script>
+	<script type="text/javascript" src="/public/plugins/bootstrap-3.3.0/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			var error = false;
+
+			$("#oldpass").blur(function(){
+				var oldpass = $("#oldpass").val();
+				if(oldpass =='') {
+					showError('旧密码', '密码不能为空');
+					error = true;
+					return;
+				}
+			});
+
+			$("#newpass").blur(function(){
+				var newpass = $("#newpass").val();
+				if(newpass == '') {
+					showError('新密码', '新密码不能为空');
+					error = true;
+				}
+			});
+
+			$("#newpassAgain").blur(function(){
+				var newpass = $("#newpass").val();
+				if(newpass == '') {
+					showError('新密码', '新密码不能为空');
+					error = true;
+					return;
+				}
+				var newpassAgain = $("#newpassAgain").val();
+				if(newpassAgain != newpass) {
+					showError('新密码', '与输入的新密码不一致');
+					error = true;
+				}
+			});
+
+			$("#submit").click(function(event){
+				error=false;
+				$("#oldpass").blur();
+				$("#newpass").blur();
+				$("#newpassAgain").blur();
+				if(!error) {
+					var newpass = $("#newpass").val();
+					var oldpass = $("#oldpass").val();
+					$.post('/crm/user/changepwd', {newpass:newpass,oldpass:oldpass}, function(data) {
+						if(data.code==0){
+							toastr.success("修改密码成功！");
+						}else{
+							showError("修改失败！",data.msg);
+						}
+					},"json");
+				}
+				event.preventDefault();
+				return false;
+			});
+
+			function showError(formSpan, errorText) {
+				toastr.error(formSpan,errorText);
+			}
+		});
+	</script>
+</body>
+</html>
