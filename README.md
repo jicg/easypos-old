@@ -16,16 +16,18 @@
 
 ---
 #### 演示环境
-账号： admin／123 方便他人，请不要修改密码！
+- 账号： admin／123 方便他人，请不要修改密码！
 [演示地址](http://easypos.hellowcloud.com/) 
+
+---
 
 #### 项目使用的框架
 1. [macaron](https://github.com/go-macaron/macaron)
 2. [xorm](https://github.com/go-xorm/xorm)
-
+---
 #### 如果您想鼓励我，您可以通过支付宝或微信表示对我的支持
-1. 支付宝
-![支付宝](snapshot/alipay.png "支付宝")
+1. 支付宝 
+- ![支付宝](snapshot/alipay.png "支付宝")
 
 2. 微信支付
-![微信](snapshot/wpay.png "微信")
+- ![微信](snapshot/wpay.png "微信")
