@@ -22,8 +22,9 @@
 ---
 
 #### 项目使用的框架
-1. [macaron](https://github.com/go-macaron/macaron)
-2. [xorm](https://github.com/go-xorm/xorm)
+* [macaron](https://github.com/go-macaron/macaron)
+* [xorm](https://github.com/go-xorm/xorm)
+
 ---
 #### 如果您想鼓励我，您可以通过支付宝或微信表示对我的支持
 |                   支付宝              |               微信               | 
