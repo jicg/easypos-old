@@ -6,6 +6,8 @@ COPY . $GOPATH/src/easypos
 # The RUN instruction will execute any commands
 # Adding HelloWorld page into Nginx server
 WORKDIR $GOPATH/src/easypos
+VOLUME $GOPATH/src/easypos/data
+VOLUME $GOPATH/src/easypos/log
 RUN go get easypos
 RUN go install -a easypos
 
