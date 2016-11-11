@@ -1,7 +1,10 @@
 FROM golang:latest
 MAINTAINER <284077318@qq.com>
+
 COPY . go/src/github.com/jicg/easypos
+
 WORKDIR go/src/github.com/jicg/easypos
+
 VOLUME go/src/github.com/jicg/easypos/data
 VOLUME go/src/github.com/jicg/easypos/log
 RUN go get github.com/jicg/easypos
