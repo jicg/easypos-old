@@ -1,4 +1,4 @@
-FROM busybox
+FROM alpine:latest
 MAINTAINER <284077318@qq.com> 
 ADD go/bin/easypos /usr/bin/easypos
 #/usr/bin/myblog
