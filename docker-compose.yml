@@ -1,9 +1,10 @@
-mybog:
+epos:
   image: daocloud.io/jicg/easypos:latest
   privileged: false
   restart: always
   ports:
-  - '3000'
+  - 3001:4000
   volumes:
   - /home/docker/easypos/data:/app/data
   - /home/docker/easypos/log:/app/log
+
