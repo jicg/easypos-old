@@ -1,0 +1,11 @@
+FROM busybox
+MAINTAINER <284077318@qq.com> 
+ADD go/bin/easypos /usr/bin/easypos
+#/usr/bin/myblog
+ADD go/src/github.com/jicg/easypos/views /app/views
+ADD go/src/github.com/jicg/easypos/public /app/public
+VOLUME /app/data
+VOLUME /app/log
+EXPOSE 4000
+WORKDIR /app
+CMD /usr/bin/easypos web --port 4000

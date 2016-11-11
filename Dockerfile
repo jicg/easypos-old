@@ -1,19 +1,11 @@
-# The FROM instruction sets the Base Image for subsequent instructions.
-# Using Nginx as Base Image
-FROM golang:1.7.1
+FROM golang:latest
 MAINTAINER <284077318@qq.com>
-COPY . $GOPATH/src/easypos
-# The RUN instruction will execute any commands
-# Adding HelloWorld page into Nginx server
-WORKDIR $GOPATH/src/easypos
-VOLUME $GOPATH/src/easypos/data
-VOLUME $GOPATH/src/easypos/log
-RUN go get easypos
-RUN go install -a easypos
+COPY . $GOPATH/src/github.com/jicg/easypos
+WORKDIR $GOPATH/src/github.com/jicg/easypos
+VOLUME $GOPATH/src/github.com/jicg/easypos/data
+VOLUME $GOPATH/src/github.com/jicg/easypos/log
+RUN go get github.com/jicg/easypos
+RUN CGO_ENABLED=0 go install -a github.com/jicg/easypos
 
-# The EXPOSE instruction informs Docker that the container listens on the specified network ports at runtime
 EXPOSE 4000
-
-# The CMD instruction provides default execution command for an container
-# Start Nginx and keep it from running background
 CMD easypos web --port 4000
