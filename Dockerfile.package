@@ -1,7 +1,8 @@
-FROM alpine:latest
+FROM hub.c.163.com/netease_comb/ubuntu:14.04
+#alpine:latest
 MAINTAINER <284077318@qq.com> 
 ADD go/bin/easypos /usr/bin/easypos
-#/usr/bin/myblog
+
 ADD go/src/github.com/jicg/easypos/views /app/views
 ADD go/src/github.com/jicg/easypos/public /app/public
 VOLUME /app/data
