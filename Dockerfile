@@ -8,9 +8,9 @@ WORKDIR $GOPATH/src/github.com/jicg/easypos
 
 WORKDIR $GOPATH/src/github.com/jicg/easypos
 
-RUN go get github.com/jicg/easypos  -tags netgo -installsuffix netgo
+RUN go get -tags netgo -installsuffix netgo github.com/jicg/easypos  
 
-RUN go install -a github.com/jicg/easypos
+RUN go install -a -tags netgo -installsuffix netgo github.com/jicg/easypos
 
 # EXPOSE 4000
 # CMD easypos web --port 4000
