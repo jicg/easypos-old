@@ -8,7 +8,7 @@ WORKDIR $GOPATH/src/github.com/jicg/easypos
 
 WORKDIR $GOPATH/src/github.com/jicg/easypos
 
-RUN go get github.com/jicg/
+RUN go get github.com/jicg/easypos
 
 RUN go install -a github.com/jicg/easypos
 
