@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM debian:latest
 #daocloud.io/centos:latest
 #alpine:latest
 MAINTAINER <284077318@qq.com> 
