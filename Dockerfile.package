@@ -1,4 +1,4 @@
-FROM hub.c.163.com/netease_comb/ubuntu:14.04
+FROM daocloud.io/centos:latest
 #alpine:latest
 MAINTAINER <284077318@qq.com> 
 ADD go/bin/easypos /usr/bin/easypos
