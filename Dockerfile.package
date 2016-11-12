@@ -1,4 +1,5 @@
-FROM daocloud.io/centos:latest
+FROM alpine:latest
+#daocloud.io/centos:latest
 #alpine:latest
 MAINTAINER <284077318@qq.com> 
 ADD go/bin/easypos /usr/bin/easypos
