@@ -18,9 +18,7 @@ func View(ctx *macaron.Context) {
 	if err := model.Engine.Find(&ds); err != nil {
 		log.Error(0, "错误:%s", err.Error())
 	}
-	ctx.Data = map[string]interface{}{
-		"ptypes": ds,
-	}
+	ctx.Data["ptypes"] = ds
 	ctx.HTML(200, "crm/product/index")
 }
 

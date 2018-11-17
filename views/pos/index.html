@@ -93,6 +93,9 @@
 		    <!-- Collect the nav links, forms, and other content for toggling -->
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		      <ul class="nav navbar-nav navbar-right">
+			  {{if .user.IsAdmin}}
+                  <li><a href="/view/crm/user"> 用户管理</a></li>
+			  {{end}}
 		      	{{/*<li><a href="/public/setup.exe" target="_blank"> 下载插件</a></li>*/}}
                     <li><a href="/view/crm/producttype"> 商品类别</a></li>
                     <li><a href="/view/crm/product"><i class="fa fa-product-hunt" aria-hidden="true"></i> 商品维护</a></li>
