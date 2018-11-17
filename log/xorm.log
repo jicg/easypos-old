@@ -1,9 +1,0 @@
-[xorm] [warn]  2016/10/06 11:40:42.726418 Table order Column customno db default is '''', struct default is ''
-[xorm] [warn]  2016/10/06 11:40:42.726510 Table order_item Column product_no db default is '''', struct default is ''
-[xorm] [warn]  2016/10/06 11:40:42.726517 Table order_item Column product_desc db default is '''', struct default is ''
-[xorm] [warn]  2016/10/06 11:40:42.726561 Table product column qtycan db type is INTEGER, struct type is REAL
-[xorm] [warn]  2016/10/06 11:40:42.726618 Table order has column c_no but struct has not related field
-[xorm] [warn]  2016/10/06 11:40:42.726623 Table order has column remark but struct has not related field
-[xorm] [info]  2016/10/06 11:40:42.726758 [sql] SELECT count(*) FROM `user`
-[xorm] [info]  2016/10/06 11:40:59.155261 [sql] SELECT `id`, `order_id`, `product_id`, `product_no`, `product_desc`, `saleprice`, `trueprice`, `qty`, `cdate`, `udate` FROM `order_item` WHERE OrderId=? [args] [5]
-[xorm] [info]  2016/10/06 11:41:25.193448 [sql] SELECT `id`, `order_id`, `product_id`, `product_no`, `product_desc`, `saleprice`, `trueprice`, `qty`, `cdate`, `udate` FROM `order_item` WHERE OrderId=? [args] [5]
