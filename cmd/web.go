@@ -44,10 +44,10 @@ func runWeb(clictx *cli.Context) {
 	evn := clictx.Int("evn")
 	//evn = 1
 	minit.Evn = evn
-	//if evn == 0 {
-	//	macaron.Env = macaron.PROD
-	//	macaron.ColorLog = false
-	//}
+	if evn == 0 {
+		macaron.Env = macaron.PROD
+		macaron.ColorLog = false
+	}
 	m := macaron.New()
 
 	m.Map(log.New(os.Stdout, minit.DEFAULT_LOG_PREFIX, 0))

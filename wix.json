@@ -1,0 +1,69 @@
+{
+  "product": "easypos",
+  "company": "jicg",
+  "license": "LICENSE",
+  "upgrade-code": "",
+  "files": {
+    "guid": "",
+    "items": [
+      "easypos.exe"
+    ]
+  },
+  "directories": [
+    "views",
+    "public",
+    "conf",
+    "nssm",
+    "log"
+  ],
+  "env": {
+    "guid": "",
+    "vars": [
+      {
+        "name": "PATH",
+        "value": "[INSTALLDIR]",
+        "permanent": "no",
+        "system": "no",
+        "action": "set",
+        "part": "last"
+      }
+    ]
+  },
+
+  "choco": {
+    "description": "easypos",
+    "project-url": "https://github.com/jicg/easypos",
+    "tags": "generate liteblog nuget",
+    "license-url": "https://github.com/jicg/easypos/blob/master/LICENSE"
+  },
+  "hooks": [
+    {
+      "command": "\"[INSTALLDIR]nssm\\nssm.exe\" install easypos \"[INSTALLDIR]easypos.exe\"",
+      "when": "install"
+    },
+    {
+      "command": "\"[INSTALLDIR]nssm\\nssm.exe\" set easypos Start SERVICE_AUTO_START",
+      "when": "install"
+    },
+    {
+      "command": "\"[INSTALLDIR]nssm\\nssm.exe\" set easypos AppStdout \"[INSTALLDIR]nssm\\info.log\"",
+      "when": "install"
+    },
+    {
+      "command": "\"[INSTALLDIR]nssm\\nssm.exe\" set easypos AppStderr \"[INSTALLDIR]nssm\\err.log\"",
+      "when": "install"
+    },
+    {
+      "command": "\"[INSTALLDIR]nssm\\nssm.exe\" set easypos AppRotateFiles 1",
+      "when": "install"
+    },
+    {
+      "command": "\"[INSTALLDIR]nssm\\nssm.exe\" set easypos AppRotateBytes 1048576",
+      "when": "install"
+    },
+    {
+      "command": "sc.exe delete easypos",
+      "when": "uninstall"
+    }
+  ]
+}
