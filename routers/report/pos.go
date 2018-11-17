@@ -13,8 +13,8 @@ type PosSale struct {
 }
 
 func PosIndex(ctx *macaron.Context) {
-	rets, err := model.Engine.Query(`select no,totamt,proamt from 
-		(select a.product_no as no,sum(a.trueprice*a.qty) as totamt ,sum((a.trueprice-b.price)*a.qty) as proamt 
+	rets, err := model.Engine.Query(`select  no,totqty,totamt,proamt from 
+		(select a.product_desc as no,sum(a.qty) as totqty, sum(a.trueprice*a.qty) as totamt ,sum((a.trueprice-b.price)*a.qty) as proamt 
 		from order_item a ,product b 
 		where strftime("%Y-%m",a.cdate) = strftime("%Y-%m",'now')
 		and a.product_no = b.no

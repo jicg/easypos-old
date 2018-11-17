@@ -58,6 +58,30 @@ func GetPro(ctx *macaron.Context) {
 	ctx.JSON(200, data)
 }
 
+func QueryPro(ctx *macaron.Context) {
+	no := ctx.Query("query")
+
+	type Se struct {
+		Name  string `json:"name"`
+		Value string `json:"value"`
+	}
+	pros := make([]*model.Product, 0)
+	model.Engine.Where(
+		"no like ? ",
+		"%"+no+"%",
+	).Or(
+		"desc like ? ",
+		"%"+no+"%",
+	).Limit(10).Find(&pros)
+	ss := make([]*Se, len(pros))
+	for index, p := range pros {
+		ss[index] = &Se{p.Desc, p.No}
+	}
+	ctx.JSON(200, map[string]interface{}{
+		"suggestions": ss,
+	})
+}
+
 func Create(ctx *macaron.Context) {
 	querystr := ctx.QueryTrim("data")
 	var porder model.Order
@@ -73,6 +97,11 @@ func Create(ctx *macaron.Context) {
 	tnow := time.Now()
 	porder.Cdate = model.Time(tnow)
 	porder.Udate = model.Time(tnow)
+
+	user := ctx.Data["user"]
+	u := user.(*model.User)
+	porder.UserId = int(u.Id)
+	porder.UserName = u.Name
 
 	session := model.Engine.NewSession()
 	defer session.Close()
@@ -110,24 +139,24 @@ func Create(ctx *macaron.Context) {
 		var pro = new(model.Product)
 		if session.Where("no = ?", item.ProductNo).Get(pro); pro != nil {
 			pro.Qtycan = pro.Qtycan - item.Qty
-			if pro.Qtycan < 0 {
-				session.Rollback()
-				ret.Code = -1
-				ret.Msg = fmt.Sprintf("条码[%s]库存不够,当前库存为: %.2f ", item.ProductNo, pro.Qtycan+item.Qty)
-				ctx.JSON(200, ret)
-				return
-			}
+			//if pro.Qtycan < 0 {
+			//	session.Rollback()
+			//	ret.Code = -1
+			//	ret.Msg = fmt.Sprintf("条码[%s]库存不够,当前库存为: %.2f ", item.ProductDesc, pro.Qtycan+item.Qty)
+			//	ctx.JSON(200, ret)
+			//	return
+			//}
 			if _, err := session.Id(pro.Id).Update(pro); err != nil {
 				session.Rollback()
 				ret.Code = -1
-				ret.Msg = fmt.Sprintf("条码[%s]更新库存失败,原因:%s", item.ProductNo, err.Error())
+				ret.Msg = fmt.Sprintf("条码[%s]更新库存失败,原因:%s", item.ProductDesc, err.Error())
 				ctx.JSON(200, ret)
 				return
 			}
 		} else {
 			session.Rollback()
 			ret.Code = -1
-			ret.Msg = fmt.Sprintf("条码[%s]不存在", item.ProductNo)
+			ret.Msg = fmt.Sprintf("条码[%s]不存在", item.ProductDesc)
 			ctx.JSON(200, ret)
 			return
 		}

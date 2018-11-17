@@ -86,6 +86,19 @@
 				that.tot_changed = true;
 				that.drawHtml();
 			})
+            this.el_productno.autocomplete({
+                serviceUrl: '/pos/qpros/'+this.el_productno.val(),
+                orientation:"top",
+                formatResult:function(suggestion, currentValue) {
+                	var val = suggestion.name+"	"+suggestion.value;
+                    if (!currentValue) {
+                        return val;
+                    }
+                    var pattern = '(' + $.Autocomplete.utils.escapeRegExChars(currentValue) + ')';
+                    return val.replace(new RegExp(pattern,'gi'), '<strong>$1<\/strong>').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/&lt;(\/?strong)&gt;/g, '<$1>');
+                },
+                deferRequestBy:200
+            });
 		},
 
 		loadOrderno:function(){
@@ -104,6 +117,7 @@
 			}else{
 				$.get('/pos/pro/'+no,function(data){
 					if(data.code==0){
+                        that.el_productno.val("");
 						that.insertPdt(data.data);
 					}else{
 						that.error(data.msg);
@@ -218,12 +232,15 @@
 			$.post("/pos/create",param,function(data){
 				if(data.code==0){
 					that.posdata.ordertime=(new Date()).format("yyyy-MM-dd hh:mm:ss");
-					that.Print(function(){
-						that.success("提交成功！");
-						$btn.button('reset');
-						that.refresh();
-						
-					});
+					// that.Print(function(){
+					// 	that.success("提交成功！");
+					// 	$btn.button('reset');
+					// 	that.refresh();
+					//
+					// });
+                    $btn.button('reset');
+                    that.success("提交成功！");
+                    that.refresh();
 				}else{
 					that.error("提交失败！",data.msg)
 					$btn.button('reset');
@@ -256,41 +273,42 @@
 			this.drawHtml();
 		},
 		
-		Print:function(func){
-			var data = {};
-			data.orderno = this.posdata.orderno;
-			var itemshtml = "";
-			for(var i =0;i<this.posdata.items.length;i++){
-				itemshtml = itemshtml+nano("<tr><td>{product_desc}</td><td>{qty}</td><td>{trueprice}</td><td>{amt}</td></tr>",this.posdata.items[i]);
-			}
-			data.itemhtml = itemshtml;
-			data.ordertime = this.posdata.ordertime;
-			data.totamt = this.posdata.totamt;
-			data.trueamt = this.posdata.trueamt;
-			data.payamt = this.posdata.payamt;
-			data.retamt = this.posdata.retamt;
-			$("#page1").html(nano($("#page1-template").html(),data));
-			doPrint();
-			if(this.isIE8()){
-				setTimeout(function(){
-					func&&func();
-				},3000)
- 			}else{
- 				func&&func();
- 			}
-			
-		},
+		// Print:function(func){
+		// 	var data = {};
+		// 	data.orderno = this.posdata.orderno;
+		// 	var itemshtml = "";
+		// 	for(var i =0;i<this.posdata.items.length;i++){
+		// 		itemshtml = itemshtml+nano("<tr><td>{product_desc}</td><td>{qty}</td><td>{trueprice}</td><td>{amt}</td></tr>",this.posdata.items[i]);
+		// 	}
+		// 	data.itemhtml = itemshtml;
+		// 	data.ordertime = this.posdata.ordertime;
+		// 	data.totamt = this.posdata.totamt;
+		// 	data.trueamt = this.posdata.trueamt;
+		// 	data.payamt = this.posdata.payamt;
+		// 	data.retamt = this.posdata.retamt;
+		// 	$("#page1").html(nano($("#page1-template").html(),data));
+		// 	doPrint();
+		// 	if(this.isIE8()){
+		// 		setTimeout(function(){
+		// 			func&&func();
+		// 		},3000)
+ 		// 	}else{
+ 		// 		func&&func();
+ 		// 	}
+		//
+		// },
 		success:function(msg,msg2){
 			toastr.success(msg,msg2);
 		},
 		error:function(msg,msg2){
 			toastr.error(msg,msg2);
 		}
-	}
+	};
 
 	var pos = window.pos = new Pos();
 	
 	$(document).ready(function(e){
 		pos.init();
+
 	});
-})($)
+})($);

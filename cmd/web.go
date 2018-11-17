@@ -17,6 +17,8 @@ import (
 	"github.com/jicg/easypos/routers/report"
 	"github.com/jicg/easypos/routers/user"
 	"gopkg.in/macaron.v1"
+	"github.com/jicg/easypos/routers/crm/producttype"
+	"github.com/jicg/easypos/routers/crm/muser"
 )
 
 var CmdWeb = cli.Command{
@@ -42,10 +44,10 @@ func runWeb(clictx *cli.Context) {
 	evn := clictx.Int("evn")
 	//evn = 1
 	minit.Evn = evn
-	if evn == 0 {
-		macaron.Env = macaron.PROD
-		macaron.ColorLog = false
-	}
+	//if evn == 0 {
+	//	macaron.Env = macaron.PROD
+	//	macaron.ColorLog = false
+	//}
 	m := macaron.New()
 
 	m.Map(log.New(os.Stdout, minit.DEFAULT_LOG_PREFIX, 0))
@@ -82,6 +84,8 @@ func runWeb(clictx *cli.Context) {
 		m.Group("/crm", func() {
 			m.Get("/product", product.View)
 			m.Get("/order", order.View)
+			m.Get("/producttype", producttype.View)
+			m.Get("/user", crm.CheckAdmin,muser.View,)
 		})
 		m.Group("/report", func() {
 			m.Get("/pos", report.PosIndex)
@@ -93,14 +97,30 @@ func runWeb(clictx *cli.Context) {
 		m.Group("/product", func() {
 			m.Any("/query", product.Query)
 			m.Any("/get/:id", product.Get)
-			m.Post("/add", product.Add)
-			m.Post("/del/:id", product.Del)
-			m.Post("/edit/:id", product.Edit)
+			m.Post("/add",crm.CheckAdmin, product.Add)
+			m.Post("/del/:id", crm.CheckAdmin,product.Del)
+			m.Post("/edit/:id",crm.CheckAdmin, product.Edit)
+			m.Any("/export", product.QueryXls)
 		})
+		m.Group("/producttype", func() {
+			m.Any("/query", producttype.Query)
+			m.Any("/get/:id", producttype.Get)
+			m.Post("/add",crm.CheckAdmin, producttype.Add)
+			m.Post("/del/:id", crm.CheckAdmin,producttype.Del)
+			m.Post("/edit/:id",crm.CheckAdmin, producttype.Edit)
+		})
+		m.Group("/user", func() {
+			m.Any("/query", muser.Query)
+			m.Any("/get/:id", muser.Get)
+			m.Post("/add", muser.Add)
+			m.Post("/del/:id", muser.Del)
+			m.Post("/edit/:id", muser.Edit)
+		},crm.CheckAdmin)
 		m.Group("/order", func() {
 			m.Any("/query", order.Query)
 			m.Any("/get/:id", order.Get)
 			m.Any("/getitems/:id", order.GetItems)
+			m.Any("/export", order.QueryXlsOrders)
 		})
 		m.Group("/user", func() {
 			m.Post("/changepwd", user.ChangePwd2)
@@ -110,6 +130,8 @@ func runWeb(clictx *cli.Context) {
 	m.Group("/pos", func() {
 		m.Get("/getno", pos.GetNo)
 		m.Get("/pro/:no", pos.GetPro)
+		m.Get("/qpros", pos.QueryPro)
+
 		m.Post("/create", pos.Create)
 	}, crm.LoginCheck)
 

@@ -42,7 +42,7 @@ func init() {
 	Engine.SetDefaultCacher(cacher)
 	log.Println("＊＊＊＊＊＊＊＊＊同步表结构＊＊＊＊＊＊＊＊＊＊＊")
 
-	err = Engine.Sync2(new(Order), new(OrderItem), new(Product), new(User))
+	err = Engine.Sync2(new(Order), new(OrderItem), new (Producttype),new(Product), new(User))
 	if err != nil {
 		log.Panicln(err.Error())
 	}

@@ -21,6 +21,8 @@ type Order struct {
 	Id       int64        `json:"id"       xorm:"not null pk autoincr"`
 	Orderno  string       `json:"orderno"  xorm:"not null unique"`
 	Customno string       `json:"customno" xorm:"index default ''"`
+	UserId   int          `json:"user_id"`
+	UserName string       `json:"user_name"`
 	Desc     string       `json:"desc"   xorm:"TEXT"`
 	Totamt   float64      `json:"totamt"   xorm:"default 0.00 Float"`
 	Trueamt  float64      `json:"trueamt"  xorm:"default 0.00 Float"`
@@ -32,27 +34,36 @@ type Order struct {
 }
 
 type Product struct {
-	Id        int64   `json:"id"         xorm:"not null pk autoincr"`
-	No        string  `json:"no"         xorm:"not null VARCHAR(80) unique"`
-	Desc      string  `json:"desc"     xorm:"not null TEXT index"`
-	Picurl    string  `json:"picurl"     xorm:"TEXT"`
-	Price     float64 `json:"price"      xorm:"default 0 Float"`
-	Saleprice float64 `json:"saleprice"  xorm:"default 0 Float"`
-	Qtycan    float64 `json:"qtycan"     xorm:"default 0"`
-	Cdate     Time    `json:"cdate"      xorm:"created"`
-	Udate     Time    `json:"udate"      xorm:"updated"`
+	Id              int64   `json:"id"         xorm:"not null pk autoincr"`
+	No              string  `json:"no"         xorm:"not null VARCHAR(80) unique"`
+	Desc            string  `json:"desc"     xorm:"not null TEXT index"`
+	Picurl          string  `json:"picurl"     xorm:"TEXT"`
+	Price           float64 `json:"price"      xorm:"default 0 Float"`
+	Saleprice       float64 `json:"saleprice"  xorm:"default 0 Float"`
+	ProducttypeId   int     `json:"producttype_id"`
+	ProducttypeName string  `json:"producttype_name"`
+	Qtycan          float64 `json:"qtycan"     xorm:"default 0"`
+	Cdate           Time    `json:"cdate"      xorm:"created"`
+	Udate           Time    `json:"udate"      xorm:"updated"`
+}
+
+type Producttype struct {
+	Id    int64  `json:"id"         xorm:"not null pk autoincr"`
+	Name  string `json:"name"       xorm:"not null VARCHAR(500) unique"`
+	Cdate Time   `json:"cdate"      xorm:"created"`
+	Udate Time   `json:"udate"      xorm:"updated"`
 }
 
 type User struct {
-	Id       int64  `xorm:"not null pk autoincr"`
-	Name     string `xorm:"not null VARCHAR(80) unique"`
-	Nickname string
-	Pwd      string `xorm:"not null VARCHAR(80)"`
-	Rands    string `xorm:"VARCHAR(10)"`
-	Salt     string `xorm:"VARCHAR(10)"`
-	IsAdmin  bool
-	Cdate    Time `xorm:"created"`
-	Udate    Time `xorm:"updated"`
+	Id       int64  `json:"id" 		xorm:"not null pk autoincr"`
+	Name     string `json:"name" 	xorm:"not null VARCHAR(80) unique"`
+	Nickname string `json:"nickname"`
+	Pwd      string `json:"-" 		xorm:"not null VARCHAR(80)"`
+	Rands    string `json:"rands" 	xorm:"VARCHAR(10)"`
+	Salt     string `json:"salt" 	xorm:"VARCHAR(10)"`
+	IsAdmin  bool   `json:"-"`
+	Cdate    Time   `json:"cdate" 	xorm:"created"`
+	Udate    Time   `json:"udate" 	xorm:"updated"`
 }
 
 type Time time.Time
@@ -65,6 +76,10 @@ func (t *Time) UnmarshalJSON(data []byte) (err error) {
 	now, err := time.ParseInLocation(`"`+timeFormart+`"`, string(data), time.Local)
 	*t = Time(now)
 	return
+}
+
+func (t *Time) ToDateString() (string) {
+	return time.Time(*t).Format(timeFormart)
 }
 
 func (t Time) MarshalJSON() ([]byte, error) {

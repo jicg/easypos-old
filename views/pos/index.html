@@ -8,6 +8,8 @@
 	<link href="/public/css/normalize.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="/public/plugins/font-awesome-4.6.3/css/font-awesome.min.css">
 	<link rel="stylesheet" href="/public/plugins/bootstrap-3.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/public/plugins/jquery.autocomplete/autocomplete.css">
+
 	{{ Safe `<!--[if lt IE 9]>
 	<script src="/public/js/respond.min.js"></script>
 	<script src="/public/js/html5.js"></script>
@@ -46,12 +48,12 @@
 	</style>
 </head>
 <body>
-	 <OBJECT style="display: none;" ID="jatoolsPrinter" CLASSID="CLSID:B43D3361-D075-4BE2-87FE-057188254255"  codebase="/public/jatoolsPrinter.cab#version=8,6,0,0"></OBJECT>  
+	<OBJECT style="display: none;" ID="jatoolsPrinter" CLASSID="CLSID:B43D3361-D075-4BE2-87FE-057188254255"  codebase="/public/jatoolsPrinter.cab#version=8,6,0,0"></OBJECT>
 	<div id="item-body-template" style="display: none;">
 		<div class="col-xs-12 col-md-6">
 			<div class="panel panel-default">
 			  <div class="panel-heading item-title">
-			  	<span>{product_no}</span>
+			  	<span style="width: 180px;display: inline-block;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{product_no}</span>
 			  	<button type="button" onclick="pos.removePdt('{product_no}');" class="close pull-right"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 			  </div>
 			  <div class="panel-body item-content">
@@ -91,10 +93,11 @@
 		    <!-- Collect the nav links, forms, and other content for toggling -->
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		      <ul class="nav navbar-nav navbar-right">
-		      	<li><a href="/public/setup.exe" target="_blank"> 下载插件</a></li>
-		      	<li><a href="/view/crm/order"><i class="fa fa-truck" aria-hidden="true"></i> 订单查看</a></li>
-		      	<li><a href="/view/crm/product"><i class="fa fa-product-hunt" aria-hidden="true"></i> 商品维护</a></li>
-		        <!-- <li><a href="#"><i class="fa fa-tachometer" aria-hidden="true"></i> 收银台</a></li> -->
+		      	{{/*<li><a href="/public/setup.exe" target="_blank"> 下载插件</a></li>*/}}
+                    <li><a href="/view/crm/producttype"> 商品类别</a></li>
+                    <li><a href="/view/crm/product"><i class="fa fa-product-hunt" aria-hidden="true"></i> 商品维护</a></li>
+                    <li><a href="/view/crm/order"><i class="fa fa-truck" aria-hidden="true"></i> 订单查看</a></li>
+		      	<!-- <li><a href="#"><i class="fa fa-tachometer" aria-hidden="true"></i> 收银台</a></li> -->
 		        <li class="dropdown">
 		          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 		          	<i class="fa fa-user" aria-hidden="true"></i>个人中心<span class="caret"></span>
@@ -118,7 +121,9 @@
 				<div class="panel-body item-body">
 				</div>
 				<div class="panel-footer">
-					<input type="text" class="form-control" name="productno" id="productno" placeholder="输入条码 + 回车键">
+					<input type="text" class="form-control"
+						   name="productno" id="productno"
+						   placeholder="输入商品拼音 + 回车键">
 				</div>
 			</div>
 		</div>
@@ -210,22 +215,23 @@
 		</script>
 	</div>
 	<script type="text/javascript" src="/public/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/public/plugins/jquery.autocomplete/jquery.autocomplete.js"></script>
 	<script type="text/javascript" src="/public/plugins/toastr/toastr.min.js"></script>
 	<script type="text/javascript" src="/public/plugins/bootstrap-3.3.0/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="/public/js/nano.js"></script>
-	<script type="text/javascript">
-        var doPrint = function() {
-            myDoc = {
-                documents: document,
-                copyrights: '杰创软件拥有版权  www.jatools.com' 
-            };
-            try{
-			   document.getElementById("jatoolsPrinter").print(myDoc, false); 
-			}catch(e){
-				toastr.warning("ie请点击“下载插件”安装，推荐使用ie9以上版本的浏览器，目前不支持非ie浏览器打印！");
-			}
-        }
-    </script>
+	{{/*<script type="text/javascript">*/}}
+        {{/*var doPrint = function() {*/}}
+            {{/*myDoc = {*/}}
+                {{/*documents: document,*/}}
+                {{/*copyrights: '杰创软件拥有版权  www.jatools.com' */}}
+            {{/*};*/}}
+            {{/*try{*/}}
+			   {{/*document.getElementById("jatoolsPrinter").print(myDoc, false); */}}
+			{{/*}catch(e){*/}}
+				{{/*toastr.warning("ie请点击“下载插件”安装，推荐使用ie9以上版本的浏览器，目前不支持非ie浏览器打印！");*/}}
+			{{/*}*/}}
+        {{/*}*/}}
+    {{/*</script>*/}}
     <script type="text/javascript" src="/public/js/pos.js"></script>
 </body>
 </html>
