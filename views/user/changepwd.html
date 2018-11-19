@@ -4,49 +4,12 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>修改密码</title>
-	<link href="/public/css/normalize.css" rel="stylesheet" type="text/css">
-	<link rel="stylesheet" href="/public/plugins/font-awesome-4.6.3/css/font-awesome.min.css">
-	<link rel="stylesheet" href="/public/plugins/bootstrap-3.3.0/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/public/plugins/toastr/toastr.min.css"></link>
-	{{ Safe `<!--[if lt IE 9]>
-	<script src="/public/js/respond.min.js"></script>
-	<script src="/public/js/html5.js"></script>
-    <![endif]-->`}}
+	{{template "crm_link"}}
 </head>
 
 <body>
 	<div class="wap">
-		<div class="header">
-			<nav class="navbar navbar-default" role="navigation">
-			  <div class="container">
-			    <!-- Brand and toggle get grouped for better mobile display -->
-			    <div class="navbar-header">
-			      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-			        <span class="sr-only">Toggle navigation</span>
-			        <span class="icon-bar"></span>
-			        <span class="icon-bar"></span>
-			        <span class="icon-bar"></span>
-			      </button>
-			      <a class="navbar-brand" href="#">修改密码</a>
-			    </div>
-
-			    <!-- Collect the nav links, forms, and other content for toggling -->
-			    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-			      <ul class="nav navbar-nav navbar-right">
-			        <li><a href="/view/pos"><i class="fa fa-tachometer" aria-hidden="true"></i> 收银台</a></li>
-			        <li class="dropdown">
-			          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-			          	<i class="fa fa-user" aria-hidden="true"></i> 个人中心<span class="caret"></span>
-			          </a>
-			          <ul class="dropdown-menu" role="menu">
-			            <li><a href="/view/logout"><i class="fa fa-power-off" aria-hidden="true"></i>  退出登录</a></li>
-			          </ul>
-			        </li>
-			      </ul>
-			    </div><!-- /.navbar-collapse -->
-			  </div><!-- /.container-fluid -->
-			</nav>
-		</div>
+		{{template "crm_header"}}
 
 		<div class="container body" style="margin-top:100px;width:250%;">
 			<form class="form-horizontal" role="form">
@@ -81,9 +44,7 @@
 			</form>
 		</div>
 	</div>
-	<script type="text/javascript" src="/public/js/jquery.min.js"></script>
-	<script type="text/javascript" src="/public/plugins/toastr/toastr.min.js"></script>
-	<script type="text/javascript" src="/public/plugins/bootstrap-3.3.0/js/bootstrap.min.js"></script>
+	{{template "crm_script"}}
 	<script type="text/javascript">
 		$(document).ready(function() {
 			var error = false;

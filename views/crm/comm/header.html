@@ -1,0 +1,59 @@
+{{define "crm_header"}}
+<div class="header">
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">EasyPos</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="header-nav">
+                <ul class="nav navbar-nav navbar-right">
+                {{if .user.IsAdmin}}
+                    <li><a href="/view/crm/user"> 用户管理</a></li>
+                {{end}}
+                    <li><a href="/view/crm/producttype"> 商品类别</a></li>
+                    <li><a href="/view/crm/product"> 商品维护</a></li>
+                    <li><a href="/view/crm/orderitem"><i class="fa fa-truck" aria-hidden="true"></i> 订单明细</a></li>
+                    <li><a href="/view/crm/order"><i class="fa fa-truck" aria-hidden="true"></i> 订单查看</a></li>
+                    <li><a href="/view/pos"><i class="fa fa-tachometer" aria-hidden="true"></i> 收银台</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-user" aria-hidden="true"></i> 个人中心<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="/view/changepwd"><i class="fa fa-lock" aria-hidden="true"></i> 修改密码</a>
+                            </li>
+                            <li><a href="/view/logout"><i class="fa fa-power-off" aria-hidden="true"></i>  退出登录</a>
+                            </li>
+                            <!-- <li class="divider"></li> -->
+                        </ul>
+                    </li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        var path = window.location.pathname;
+        $lis = $("#header-nav li");
+        $als = $("#header-nav li>a");
+        for(var i =0;i<$lis.length;i++){
+            var href = $als.eq(i).attr("href");
+            if(href==path){
+                $lis.eq(i).addClass("active");
+                break;
+            }
+        }
+    });
+</script>
+{{end}}

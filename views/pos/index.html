@@ -5,50 +5,41 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<title>收银台</title>
-	<link href="/public/css/normalize.css" rel="stylesheet" type="text/css">
-	<link rel="stylesheet" href="/public/plugins/font-awesome-4.6.3/css/font-awesome.min.css">
-	<link rel="stylesheet" href="/public/plugins/bootstrap-3.3.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/public/plugins/jquery.autocomplete/autocomplete.css">
+	{{template "crm_link"}}
+    <style type="text/css">
+        .body{margin-top: 30px;}
+        @-moz-document url-prefix() {
+            fieldset { display: table-cell; }
+        }
+        .item-body{height: 360px;overflow-y: auto;}
+        .panel{margin-bottom: 5px;}
 
-	{{ Safe `<!--[if lt IE 9]>
-	<script src="/public/js/respond.min.js"></script>
-	<script src="/public/js/html5.js"></script>
-    <![endif]-->`}}
-	<link rel="stylesheet" href="/public/plugins/toastr/toastr.min.css"></link>
-	<style type="text/css">
-		.body{margin-top: 30px;}
-		@-moz-document url-prefix() {
-		  fieldset { display: table-cell; }
-		}
-		.item-body{height: 360px;overflow-y: auto;}
-		.panel{margin-bottom: 5px;}
-
-		.item-title{padding: 3px 5px 3px 15px;}
-		.item-content{padding: 3px 15px;}
-		.item-desc{text-overflow:ellipsis; white-space:nowrap;height=24px;line-height:24px; overflow:hidden;font-weight: normal;}
-		dl{margin-bottom: 0px;}
-		.summary{line-height: 40px;font-size: 24px;padding: 15px;}
-		.summary strong{color:red;padding:0px 5px; }
-		.input-txt{border:1px solid #eee;margin-left: 5px;padding: 0px 5px;  }
-		#page1 .shop_name {
-			text-align: center;
-			padding-left: 8px;
-			font-size: 16px;
-			font-weight: bold;
-			width: 238px;
-		}
-		#page1 .table1 {
-		    width: 236px;
-		    font-size: 12px;
-		    border-collapse:collapse;
-		}
-		#page1 .table1 td{
-		  vertical-align: middle;
-		}
-	</style>
+        .item-title{padding: 3px 5px 3px 15px;}
+        .item-content{padding: 3px 15px;}
+        .item-desc{text-overflow:ellipsis; white-space:nowrap;height=24px;line-height:24px; overflow:hidden;font-weight: normal;}
+        dl{margin-bottom: 0px;}
+        .summary{line-height: 40px;font-size: 24px;padding: 15px;}
+        .summary strong{color:red;padding:0px 5px; }
+        .input-txt{border:1px solid #eee;margin-left: 5px;padding: 0px 5px;  }
+        #page1 .shop_name {
+            text-align: center;
+            padding-left: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            width: 238px;
+        }
+        #page1 .table1 {
+            width: 236px;
+            font-size: 12px;
+            border-collapse:collapse;
+        }
+        #page1 .table1 td{
+            vertical-align: middle;
+        }
+    </style>
 </head>
 <body>
-	<OBJECT style="display: none;" ID="jatoolsPrinter" CLASSID="CLSID:B43D3361-D075-4BE2-87FE-057188254255"  codebase="/public/jatoolsPrinter.cab#version=8,6,0,0"></OBJECT>
+	{{/*<OBJECT style="display: none;" ID="jatoolsPrinter" CLASSID="CLSID:B43D3361-D075-4BE2-87FE-057188254255"  codebase="/public/jatoolsPrinter.cab#version=8,6,0,0"></OBJECT>*/}}
 	<div id="item-body-template" style="display: none;">
 		<div class="col-xs-12 col-md-6">
 			<div class="panel panel-default">
@@ -76,46 +67,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="header">
-		<nav class="navbar navbar-default" role="navigation">
-		  <div class="container">
-		    <!-- Brand and toggle get grouped for better mobile display -->
-		    <div class="navbar-header">
-		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-		        <span class="sr-only">Toggle navigation</span>
-		        <span class="icon-bar"></span>
-		        <span class="icon-bar"></span>
-		        <span class="icon-bar"></span>
-		      </button>
-		      <a class="navbar-brand" href="#">收银台</a>
-		    </div>
-
-		    <!-- Collect the nav links, forms, and other content for toggling -->
-		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-		      <ul class="nav navbar-nav navbar-right">
-			  {{if .user.IsAdmin}}
-                  <li><a href="/view/crm/user"> 用户管理</a></li>
-			  {{end}}
-		      	{{/*<li><a href="/public/setup.exe" target="_blank"> 下载插件</a></li>*/}}
-                    <li><a href="/view/crm/producttype"> 商品类别</a></li>
-                    <li><a href="/view/crm/product"><i class="fa fa-product-hunt" aria-hidden="true"></i> 商品维护</a></li>
-                    <li><a href="/view/crm/order"><i class="fa fa-truck" aria-hidden="true"></i> 订单查看</a></li>
-		      	<!-- <li><a href="#"><i class="fa fa-tachometer" aria-hidden="true"></i> 收银台</a></li> -->
-		        <li class="dropdown">
-		          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-		          	<i class="fa fa-user" aria-hidden="true"></i>个人中心<span class="caret"></span>
-		          </a>
-		          <ul class="dropdown-menu" role="menu">
-		            <li><a href="/view/changepwd"><i class="fa fa-lock" aria-hidden="true"></i>修改密码</a></li>
-		            <li><a href="/view/logout"><i class="fa fa-power-off" aria-hidden="true"></i>退出登录</a></li>
-		            <!-- <li class="divider"></li> -->
-		          </ul>
-		        </li>
-		      </ul>
-		    </div><!-- /.navbar-collapse -->
-		  </div><!-- /.container-fluid -->
-		</nav>
-	</div>
+	{{template "crm_header" .}}
 
 	<div class="container body">
 		<div class="col-md-8">
@@ -217,24 +169,7 @@
 			</div>
 		</script>
 	</div>
-	<script type="text/javascript" src="/public/js/jquery.min.js"></script>
-    <script type="text/javascript" src="/public/plugins/jquery.autocomplete/jquery.autocomplete.js"></script>
-	<script type="text/javascript" src="/public/plugins/toastr/toastr.min.js"></script>
-	<script type="text/javascript" src="/public/plugins/bootstrap-3.3.0/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="/public/js/nano.js"></script>
-	{{/*<script type="text/javascript">*/}}
-        {{/*var doPrint = function() {*/}}
-            {{/*myDoc = {*/}}
-                {{/*documents: document,*/}}
-                {{/*copyrights: '杰创软件拥有版权  www.jatools.com' */}}
-            {{/*};*/}}
-            {{/*try{*/}}
-			   {{/*document.getElementById("jatoolsPrinter").print(myDoc, false); */}}
-			{{/*}catch(e){*/}}
-				{{/*toastr.warning("ie请点击“下载插件”安装，推荐使用ie9以上版本的浏览器，目前不支持非ie浏览器打印！");*/}}
-			{{/*}*/}}
-        {{/*}*/}}
-    {{/*</script>*/}}
+	{{template "crm_script"}}
     <script type="text/javascript" src="/public/js/pos.js"></script>
 </body>
 </html>

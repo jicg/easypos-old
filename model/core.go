@@ -8,13 +8,23 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 	"log"
 	"os"
+	"github.com/jmoiron/sqlx"
 )
 
 var Engine *xorm.Engine
 
+var SqlxDB *sqlx.DB
+
 func init() {
 
 	log.Println("＊＊＊＊＊＊＊＊＊数据库初始化＊＊＊＊＊＊＊＊＊＊＊")
+	if err:=os.MkdirAll("data",0777);err!=nil{
+		println(err.Error())
+	}
+
+	if err:=os.MkdirAll("log",0777);err!=nil{
+		println(err.Error())
+	}
 	//得到配置信息
 	var err error
 	Engine, err = xorm.NewEngine("sqlite3", "./data/easypos.db")
@@ -22,6 +32,8 @@ func init() {
 		println(err.Error())
 		return
 	}
+	SqlxDB = sqlx.NewDb(Engine.DB().DB,"sqlite3")
+
 	f, err := os.Open(mini.XORM_LOG_PATH)
 	if err != nil {
 		f, err = os.Create(mini.XORM_LOG_PATH)

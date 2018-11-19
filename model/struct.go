@@ -35,14 +35,16 @@ type Order struct {
 
 type Product struct {
 	Id              int64   `json:"id"         xorm:"not null pk autoincr"`
-	No              string  `json:"no"         xorm:"not null VARCHAR(80) unique"`
-	Desc            string  `json:"desc"     xorm:"not null TEXT index"`
+	No              string  `json:"no"         xorm:"not null VARCHAR(200) unique"`
+	Desc            string  `json:"desc"     xorm:"not null  VARCHAR(200) index"`
 	Picurl          string  `json:"picurl"     xorm:"TEXT"`
 	Price           float64 `json:"price"      xorm:"default 0 Float"`
 	Saleprice       float64 `json:"saleprice"  xorm:"default 0 Float"`
-	ProducttypeId   int     `json:"producttype_id"`
+	ProducttypeId   int     `json:"producttype_id" `
 	ProducttypeName string  `json:"producttype_name"`
 	Qtycan          float64 `json:"qtycan"     xorm:"default 0"`
+	Unit  string `json:"unit"  xorm:"VARCHAR(20)"`
+	Remark string `json:"remark"  xorm:"TEXT"`
 	Cdate           Time    `json:"cdate"      xorm:"created"`
 	Udate           Time    `json:"udate"      xorm:"updated"`
 }

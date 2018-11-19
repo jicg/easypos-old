@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>订单明细</title>
+{{template "crm_link"}}
+</head>
+
+<body>
+<div class="wap">
+    {{template "crm_header" .}}
+
+
+    <div class="container body">
+        <div class="col-md-12">
+            <table id="grid-data" class="table table-condensed table-hover table-striped">
+                <colgroup>
+                    <col width="40px;"></col>
+                    <col width="160px;"></col>
+                    <col width="80px;"></col>
+                    <col width="20%"></col>
+                    <col width="20%"></col>
+                    <col width="85px;"></col>
+                    <col width="140px;"></col>
+                </colgroup>
+                <thead>
+                <tr>
+                    <th data-column-id="id" data-type="numeric">ID</th>
+                    <th data-column-id="orderno">编号</th>
+                    <th data-column-id="user_name">用户</th>
+                    <th data-column-id="product_desc">商品</th>
+                    <th data-column-id="qty">数量</th>
+                    <th data-column-id="price">单价</th>
+                    <th data-column-id="desc">描述</th>
+                    <th data-column-id="udate" data-style="width:120px;">修改时间</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+<script id="order-actonBar" type="text/html">
+    <div id="{{"{{ctx.id}}" }}" class="{{"{{css.header}}"}}">
+        <div class="col-sm-12 actionBar">
+            <div class="row">
+                <p class="{{"{{css.search}}"}}"></p>
+                <p class="{{"{{css.actions}}"}}"></p>
+                <button id="do-export" class="btn btn-default">
+                    导出xlxs
+                </button>
+            </div>
+        </div>
+    </div>
+</script>
+{{template "crm_script"}}
+<script type="text/javascript">
+    var grid = $("#grid-data").bootgrid({
+        templates: {
+            header: $("#order-actonBar").html()
+        },
+        ajax: true,
+        post: function () {
+            return {
+            };
+        },
+        url: "/crm/order/queryitem",
+        labels: {
+            all: "全部",
+            infos: "{{"{{ctx.start}}"}}-{{"{{ctx.end}}"}}/{{"{{ctx.total}}"}}",
+            loading: "加载...",
+            noResults: "没有数据!",
+            refresh: "刷新",
+            search: "查询"
+        }
+    });
+    $(document).ready(function () {
+        $("#do-export").click(function () {
+            var $form = $("<form style='display: none' action='/crm/order/exportitem'>"
+                    + "<input type='hidden' name='searchPhrase' value='" + $(".search-field").val() + "'>"
+                    + "</form>");
+            $form.appendTo("body");
+            $form.submit();
+            $form.remove();
+        });
+    });
+</script>
+</body>
+</html>

@@ -14,9 +14,7 @@ import (
 
 // 获取 零售单号 /
 // 查询 条码 /no
-
 //新增订单 json
-
 func Index(ctx *macaron.Context) {
 	ctx.HTML(200, "pos/index")
 }
@@ -146,7 +144,7 @@ func Create(ctx *macaron.Context) {
 			//	ctx.JSON(200, ret)
 			//	return
 			//}
-			if _, err := session.Id(pro.Id).Update(pro); err != nil {
+			if _, err := session.Table(pro).Id(pro.Id).Update(map[string]interface{}{"qtycan":pro.Qtycan}); err != nil {
 				session.Rollback()
 				ret.Code = -1
 				ret.Msg = fmt.Sprintf("条码[%s]更新库存失败,原因:%s", item.ProductDesc, err.Error())

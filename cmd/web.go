@@ -84,6 +84,7 @@ func runWeb(clictx *cli.Context) {
 		m.Group("/crm", func() {
 			m.Get("/product", product.View)
 			m.Get("/order", order.View)
+			m.Get("/orderitem", order.ViewItem)
 			m.Get("/producttype", producttype.View)
 			m.Get("/user", crm.CheckAdmin,muser.View,)
 		})
@@ -118,9 +119,11 @@ func runWeb(clictx *cli.Context) {
 		},crm.CheckAdmin)
 		m.Group("/order", func() {
 			m.Any("/query", order.Query)
+			m.Any("/queryitem", order.QueryItem)
 			m.Any("/get/:id", order.Get)
 			m.Any("/getitems/:id", order.GetItems)
 			m.Any("/export", order.QueryXlsOrders)
+			m.Any("/exportitem", order.QueryItemXlsOrders)
 		})
 		m.Group("/user", func() {
 			m.Post("/changepwd", user.ChangePwd2)

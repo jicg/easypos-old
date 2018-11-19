@@ -123,7 +123,7 @@ func QueryXls(ctx *macaron.Context) {
 	}
 	xlsx := excelize.NewFile()
 	if style, err := xlsx.NewStyle(`{"font":{"bold":true,family":"Berlin Sans FB Demi"}}`); err == nil {
-		xlsx.SetCellStyle("Sheet1", "A1", "G1", style)
+		xlsx.SetCellStyle("Sheet1", "A1", "I1", style)
 	}
 	xlsx.SetCellValue("Sheet1", "A1", "Id")
 	xlsx.SetCellValue("Sheet1", "B1", "商品名称")
@@ -131,7 +131,9 @@ func QueryXls(ctx *macaron.Context) {
 	xlsx.SetCellValue("Sheet1", "D1", "进价")
 	xlsx.SetCellValue("Sheet1", "E1", "售价")
 	xlsx.SetCellValue("Sheet1", "F1", "库存")
-	xlsx.SetCellValue("Sheet1", "G1", "创建时间")
+	xlsx.SetCellValue("Sheet1", "G1", "单位")
+	xlsx.SetCellValue("Sheet1", "H1", "备注")
+	xlsx.SetCellValue("Sheet1", "I1", "创建时间")
 	for index, v := range pros {
 		indexStr := index + 2
 		xlsx.SetCellValue("Sheet1", fmt.Sprintf("%s[%d]", "A", indexStr), v.Id)
@@ -141,7 +143,9 @@ func QueryXls(ctx *macaron.Context) {
 		xlsx.SetCellValue("Sheet1", fmt.Sprintf("%s[%d]", "D", indexStr), v.Price)
 		xlsx.SetCellValue("Sheet1", fmt.Sprintf("%s[%d]", "E", indexStr), v.Saleprice)
 		xlsx.SetCellValue("Sheet1", fmt.Sprintf("%s[%d]", "F", indexStr), v.Qtycan)
-		xlsx.SetCellValue("Sheet1", fmt.Sprintf("%s[%d]", "G", indexStr), v.Cdate.ToDateString())
+		xlsx.SetCellValue("Sheet1", fmt.Sprintf("%s[%d]", "G", indexStr), v.Unit)
+		xlsx.SetCellValue("Sheet1", fmt.Sprintf("%s[%d]", "H", indexStr), v.Remark)
+		xlsx.SetCellValue("Sheet1", fmt.Sprintf("%s[%d]", "I", indexStr), v.Cdate.ToDateString())
 	}
 	xlsx.SetActiveSheet(1)
 	ctx.Header()["Expires"]=[]string{"0"}
@@ -177,6 +181,8 @@ func Add(ctx *macaron.Context) {
 	price := ctx.QueryFloat64("price")
 	saleprice := ctx.QueryFloat64("saleprice")
 	qtycan := ctx.QueryFloat64("qtycan")
+	remark := ctx.QueryTrim("remark")
+	unit := ctx.QueryTrim("unit")
 	producttype_id := ctx.QueryInt("producttype_id")
 	pro := new(model.Producttype)
 
@@ -199,6 +205,8 @@ func Add(ctx *macaron.Context) {
 			Qtycan: qtycan,
 			ProducttypeName:pro.Name,
 			ProducttypeId:producttype_id,
+			Unit:unit,
+			Remark: remark,
 		}); err != nil {
 		jsonRet.Code = -1
 		jsonRet.Msg = err.Error()
@@ -229,18 +237,21 @@ func Edit(ctx *macaron.Context) {
 		price := ctx.QueryFloat64("price")
 		saleprice := ctx.QueryFloat64("saleprice")
 		qtycan := ctx.QueryFloat64("qtycan")
-
+		remark := ctx.QueryTrim("remark")
+		unit := ctx.QueryTrim("unit")
 
 		pt := new(model.Producttype)
 		_,err= model.Engine.ID(producttype_id).Get(pt)
-		if err==nil{
+		if err==nil {
 			pro.Desc = desc
 			pro.Price = price
 			pro.Saleprice = saleprice
 			pro.Qtycan = qtycan
 			pro.ProducttypeId = int(pt.Id)
 			pro.ProducttypeName = pt.Name
-			pro.No=no
+			pro.No = no
+			pro.Unit = unit
+			pro.Remark = remark
 		}else{
 			err = errors.New("商品类别不存在 "+err.Error())
 		}
