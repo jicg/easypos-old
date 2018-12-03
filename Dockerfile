@@ -1,4 +1,5 @@
-FROM golang:latest as builder
+ARG GO_VERSION=1.11
+FROM golang:${GO_VERSION}-alpine AS builder
 MAINTAINER <284077318@qq.com>
 COPY . $GOPATH/src/github.com/jicg/easypos
 WORKDIR $GOPATH/src/github.com/jicg/easypos
