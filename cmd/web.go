@@ -29,7 +29,7 @@ var CmdWeb = cli.Command{
 	Flags: []cli.Flag{
 		cli.IntFlag{
 			Name:  "port",
-			Value: 8080,
+			Value: 4000,
 			Usage: "端口",
 		},
 		cli.IntFlag{

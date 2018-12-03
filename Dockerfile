@@ -16,4 +16,4 @@ VOLUME /app/data
 VOLUME /app/log
 EXPOSE 4000
 WORKDIR /app
-CMD /usr/bin/easypos web --port 4000
+CMD /usr/bin/easypos
