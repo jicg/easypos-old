@@ -16,4 +16,4 @@ VOLUME /app/data
 VOLUME /app/log
 EXPOSE 4000
 WORKDIR /app
-ENTRYPOINT ["/app/easypos", "web", "--port" ,"4000"]
+ENTRYPOINT ["/app/easypos", "web --port 4000"]
