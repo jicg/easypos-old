@@ -209,7 +209,7 @@ func QueryItem(ctx *macaron.Context) {
 		Customno  null.String `json:"customno"`
 		UserName  null.String `db:"user_name" json:"user_name"`
 		ProductDesc  null.String `db:"product_desc"  json:"product_desc"`
-		Qty  null.Int `json:"qty"`
+		Qty  null.Float `json:"qty"`
 		Price  null.Float `json:"price"`
 		Desc  null.String `json:"desc"`
 		Udate  model.Time `json:"udate"`

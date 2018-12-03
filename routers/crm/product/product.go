@@ -255,7 +255,7 @@ func Edit(ctx *macaron.Context) {
 		}else{
 			err = errors.New("商品类别不存在 "+err.Error())
 		}
-		_, err = model.Engine.ID(id).Update(pro)
+		_, err = model.Engine.ID(id).MustCols("remark,qty,unit,price,saleprice,qtycan").Update(pro)
 	} else {
 		err = errors.New("商品不存在 "+err.Error())
 	}
