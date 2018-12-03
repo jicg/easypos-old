@@ -3,7 +3,7 @@ FROM golang:${GO_VERSION}-alpine AS builder
 MAINTAINER <284077318@qq.com>
 COPY . $GOPATH/src/github.com/jicg/easypos
 WORKDIR $GOPATH/src/github.com/jicg/easypos
-RUN apk add --no-cache ca-certificates git
+RUN apk add --no-cache git gcc
 RUN go get github.com/jicg/easypos
 RUN go install -a github.com/jicg/easypos
 
