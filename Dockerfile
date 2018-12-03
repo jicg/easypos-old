@@ -14,6 +14,6 @@ COPY --from=builder /go/src/github.com/jicg/easypos/views /app/views
 COPY --from=builder /go/src/github.com/jicg/easypos/public /app/public
 VOLUME /app/data
 VOLUME /app/log
-EXPOSE 3000
+EXPOSE 4000
 WORKDIR /app
-ENTRYPOINT ["/app/easypos web --port 3000"]
+ENTRYPOINT ["/app/easypos web --port 4001"]
