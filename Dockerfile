@@ -6,16 +6,13 @@ WORKDIR $GOPATH/src/github.com/jicg/easypos
 RUN go get  github.com/jicg/easypos
 RUN go install -a github.com/jicg/easypos
 
-FROM debian:latest
-#daocloud.io/centos:latest
-#alpine:latest
+FROM scratch AS final
 MAINTAINER <284077318@qq.com>
-ADD go/bin/easypos /usr/bin/easypos
-
-ADD go/src/github.com/jicg/easypos/views /app/views
-ADD go/src/github.com/jicg/easypos/public /app/public
+COPY --from=builder /go/bin/easypos /app/easypos
+COPY --from=builder /go/src/github.com/jicg/easypos/views /app/views
+COPY --from=builder /go/src/github.com/jicg/easypos/public /app/public
 VOLUME /app/data
 VOLUME /app/log
-EXPOSE 4000
+EXPOSE 8080
 WORKDIR /app
-CMD /usr/bin/easypos web --port 4000
+ENTRYPOINT ["/app/easypos"]
