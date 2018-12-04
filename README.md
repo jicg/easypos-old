@@ -5,7 +5,6 @@
 2. 创建订单
 3. 查询订单
 4. 库存控制
-5. 打印小票(只支持ie)
 
 #### 界面截图
 1. 商品维护界面
@@ -17,16 +16,10 @@
 ---
 #### 演示环境
 - 账号： admin／123 方便他人，请不要修改密码！
-[演示地址](http://easypos.hellowcloud.com/) 
+[演示地址](https://easypos.hellowcloud.com/) 
 
 ---
 
 #### 项目使用的框架
 * [macaron](https://github.com/go-macaron/macaron)
 * [xorm](https://github.com/go-xorm/xorm)
-
----
-#### 如果您想鼓励我，您可以通过支付宝或微信表示对我的支持
-|                   支付宝              |               微信               | 
-|:------------------------------------:|:--------------------------------:| 
-| ![支付宝](snapshot/alipay.png "支付宝")| ![微信](snapshot/wpay.png "微信") |
