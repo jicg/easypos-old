@@ -16,4 +16,7 @@ VOLUME /app/data
 VOLUME /app/log
 EXPOSE 4000
 WORKDIR /app
+RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+&& echo 'Asia/Shanghai' >/etc/timezone \
+&& chmod +x start.sh
 CMD /usr/bin/easypos
