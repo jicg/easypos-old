@@ -14,11 +14,6 @@
 
 
 ---
-#### 演示环境
-- 账号： admin／123 方便他人，请不要修改密码！
-[演示地址](https://easypos.hellowcloud.com/) 
-
----
 
 #### 项目使用的框架
 * [macaron](https://github.com/go-macaron/macaron)
